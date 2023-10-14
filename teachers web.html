@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bon anniversaire!</title>
+    <style>
+        body {
+            background: url(confetti.png) no-repeat fixed center;
+            background-size: cover;
+            font-family: Courier New;
+            font-weight: bold;
+        }
+        div.letters {
+            text-align: center;
+            vertical-align: center;
+            margin-top: 15%;
+        }
+        h1 {
+            display: inline;
+            margin-right: 20px;
+            font-size: 84px;
+        }
+        .letter:lest-child {
+            margin-right: 0;
+        }
+        .indent {
+            margin-left: 20px;
+        }
+        div.buttons {
+            position: absolute;
+            bottom: 0;
+            height: 20%;
+            width: 100%;
+        }
+        button {
+            height: 100%;
+            width: 49%;
+            font-size: 36px;
+            font-family: Courier New;
+            font-weight: bold;
+            background-color: rgba(99, 99, 99, .4);
+        }
+        #b_one {
+            background-color: rgba(255, 100, 0, .8);
+        }
+    </style>
+</head>
+<body>
+    <div class="letters">
+    <h1 class="letter one">H</h1>
+    <h1 class="letter two">A</h1>
+    <h1 class="letter three">P</h1>
+    <h1 class="letter one">P</h1>
+    <h1 class="letter two">Y</h1>
+    <h1 class="indent"></h1>
+    <h1 class="letter three">B</h1>
+    <h1 class="letter one">I</h1>
+    <h1 class="letter two">R</h1>
+    <h1 class="letter three">T</h1>
+    <h1 class="letter one">H</h1>
+    <h1 class="letter two">D</h1>
+    <h1 class="letter three">A</h1>
+    <h1 class="letter one">Y</h1>
+    <br>
+    <h1 class="letter two">M</h1>
+    <h1 class="letter three">I</h1>
+    <h1 class="letter one">S</h1>
+    <h1 class="letter two">S</h1>
+    </div>
+    <div class="buttons">
+        <button id="b_one" onclick="switch_mode_christmas()">christmas lights</button>
+        <button id="b_two" onclick="switch_mode_wave()">waves</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script>
+        const headers_1 = $(".one");
+        const headers_2 = $(".two");
+        const headers_3 = $(".three");
+        const headers_all = $(".letter");
+        var iteration = 1;
+        var colour_1 = "blue";
+        var colour_2 = "green";
+        var colour_3 = "red";
+        var timeouts = [];
+        function colours(){
+            if (iteration === 1){
+                headers_1.css("color", colour_1);
+                headers_2.css("color", colour_2);
+                headers_3.css("color", colour_3);
+            }
+            if (iteration === 2){
+                headers_1.css("color", colour_2);
+                headers_2.css("color", colour_3);
+                headers_3.css("color", colour_1);
+            }
+            if (iteration === 3){
+                headers_1.css("color", colour_3);
+                headers_2.css("color", colour_1);
+                headers_3.css("color", colour_2);
+            }
+            iteration++;
+            if (iteration === 4){
+                iteration = 1;
+            }
+        }
+        function wave(){
+            headers_all.css("color", "blue");
+            function colourChange(i, colour){
+                headers_all[i].style.color = colour;
+            }
+            function setIntervalXTimes(callback, delay, repetitions, colour){
+                var x = 0;
+                var intervalId = setInterval(function (){
+                timeouts.push(intervalId);
+                    callback(x, colour);
+                    if (++x === repetitions) {
+                        clearInterval(intervalId);
+                    }
+                }, delay)
+            }
+            setIntervalXTimes(colourChange, 150, 19, "red")
+            timeouts.push(setTimeout(setIntervalXTimes, 2850, colourChange, 150, 19, "green"))
+            timeouts.push(setTimeout(setIntervalXTimes, 5700, colourChange, 150, 19, "blue"))
+        }
+        function switch_mode_wave(){
+            $("#b_two").css("background-color", "rgba(255, 100, 0, .8)");
+            $("#b_one").css("background-color", "rgba(99, 99, 99, .4)");
+            clearTimeoff();
+            wave();
+            timeouts.push(setInterval(function (){
+                setTimeout(wave, 0);
+            }, 8550))
+        }
+        function switch_mode_christmas(){
+            $("#b_one").css("background-color", "rgba(255, 100, 0, .8)");
+            $("#b_two").css("background-color", "rgba(99, 99, 99, .4)");
+            clearTimeoff();
+            colours();
+            timeouts.push(setInterval(colours, 500));
+        }
+        function clearTimeoff(){
+            for (var i = 0; i < timeouts.length; i++){
+                clearTimeout(timeouts[i]);
+            }
+        }
+        colours();
+        timeouts.push(setInterval(colours, 500));
+    </script>
+</body>
+</html>
